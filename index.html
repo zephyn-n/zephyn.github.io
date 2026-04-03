@@ -3,31 +3,783 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - ForsakenUnblocked</title>
-    <link rel="stylesheet" href="style.css">
+    <title>ForsakenUnblocked</title>
+    <style>
+        /* --- DESIGN SYSTEM & VARIABLES --- */
+        :root {
+            --bg-color: #05050A; /* Near black */
+            --surface-color: #12131C; /* Dark navy */
+            --surface-hover: #1A1C29;
+            --primary-color: #0B5FFF; /* Deep blue */
+            --accent-color: #00E5FF; /* Bright blue */
+            --text-main: #FFFFFF;
+            --text-secondary: #9BA1B0;
+            --border-radius: 12px;
+            --transition-speed: 0.3s;
+            --header-height: 70px;
+        }
+
+        /* --- RESET & TYPOGRAPHY --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- LAYOUT STRUCTURE --- */
+
+        /* Header (Sticky) */
+        header.sticky-header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: var(--header-height);
+            background: rgba(5, 5, 10, 0.9);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: var(--text-main);
+            text-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+        }
+
+        .logo span {
+            color: var(--accent-color);
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color var(--transition-speed);
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: var(--header-height);
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            background: radial-gradient(circle at center, rgba(11, 95, 255, 0.15) 0%, rgba(5, 5, 10, 1) 70%);
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, #FFFFFF, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        /* Buttons & CTA */
+        .btn {
+            padding: 14px 32px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(11, 95, 255, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 229, 255, 0.6);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-main);
+            border: 2px solid rgba(255,255,255,0.1);
+            margin-left: 15px;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text-secondary);
+            background-color: rgba(255,255,255,0.05);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(11, 95, 255, 0.7); }
+            70% { box-shadow: 0 0 0 12px rgba(11, 95, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(11, 95, 255, 0); }
+        }
+
+        /* Section Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 28px;
+            background-color: var(--accent-color);
+            margin-right: 15px;
+            border-radius: 4px;
+            box-shadow: 0 0 8px var(--accent-color);
+        }
+
+        /* Game Grid & Cards */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr); /* 5 slots desktop */
+            gap: 25px;
+        }
+
+        .featured-grid {
+            grid-template-columns: repeat(3, 1fr); /* Larger slots for featured */
+            margin-bottom: 60px;
+        }
+
+        .game-card {
+            background-color: var(--surface-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.03);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(11, 95, 255, 0.3);
+            border-color: rgba(11, 95, 255, 0.3);
+            z-index: 2;
+        }
+
+        .thumbnail-container {
+            width: 100%;
+            padding-top: 65%; /* 16:9 Aspect Ratio trick */
+            position: relative;
+            background: linear-gradient(45deg, #12131C, #1A1C29);
+            overflow: hidden;
+        }
+
+        .thumbnail-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+            color: rgba(255,255,255,0.1);
+            font-size: 2rem;
+            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 20px, transparent 20px, transparent 40px);
+        }
+
+        .game-info {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--surface-color);
+        }
+
+        .game-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-right: 10px;
+        }
+
+        .play-btn-small {
+            background-color: rgba(11, 95, 255, 0.2);
+            color: var(--accent-color);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .game-card:hover .play-btn-small {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        /* Player Section */
+        .player-section {
+            background: #000;
+            border-radius: var(--border-radius);
+            margin: 40px auto;
+            max-width: 1400px;
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid var(--primary-color);
+            box-shadow: 0 0 30px rgba(11, 95, 255, 0.2);
+            scroll-margin-top: calc(var(--header-height) + 20px);
+            opacity: 0;
+            transform: scale(0.98);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .player-section.active {
+            display: flex;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .player-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background: var(--surface-color);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .player-header h2 {
+            font-size: 1.3rem;
+            color: var(--accent-color);
+        }
+
+        .player-controls button {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            margin-left: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .player-controls button:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .player-controls .close-btn:hover {
+            background: #ff3366;
+        }
+
+        .iframe-container {
+            width: 100%;
+            height: 600px;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-secondary);
+        }
+        
+        /* Iframe placeholder styling for simulation */
+        .embed-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: repeating-radial-gradient(circle at center, #111, #111 10px, #0a0a0a 10px, #0a0a0a 20px);
+            color: #fff;
+            font-size: 1.2rem;
+            font-family: monospace;
+        }
+
+        /* Footer (Sticky bottom) */
+        .sticky-footer {
+            background: var(--surface-color);
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            position: sticky;
+            bottom: 0;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+
+        /* --- RESPONSIVENESS --- */
+        @media (max-width: 1200px) {
+            .game-grid { grid-template-columns: repeat(4, 1fr); }
+            .featured-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 992px) {
+            .game-grid { grid-template-columns: repeat(3, 1fr); }
+            .featured-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero h1 { font-size: 2.8rem; }
+        }
+
+        @media (max-width: 768px) {
+            .game-grid { grid-template-columns: repeat(2, 1fr); }
+            .featured-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero h1 { font-size: 2.2rem; }
+            .hero-buttons { display: flex; flex-direction: column; gap: 15px; }
+            .btn-secondary { margin-left: 0; }
+            .player-header { flex-direction: column; gap: 15px; }
+        }
+
+        @media (max-width: 480px) {
+            .game-grid, .featured-grid { grid-template-columns: 1fr; }
+            header.sticky-header { padding: 0 20px; }
+            .iframe-container { height: 400px; }
+        }
+    </style>
 </head>
 <body>
 
-<nav>
-    <h1>🎮 ForsakenUnblocked</h1>
-    <div>
-        <a href="index.html">Home</a>
-        <a href="games.html">Games</a>
+    <header class="sticky-header">
+        <div class="logo">Forsaken<span>Unblocked</span></div>
+        <div class="nav-links">
+            <a href="#top">Home</a>
+        </div>
+    </header>
+
+    <section class="hero" id="top">
+        <h1>Play the Best Free Online Games</h1>
+        <p>I did NOT make these games, I only made the website and embedded the games</p>
+        <div class="hero-buttons">
+            <button class="btn btn-primary pulse" onclick="document.getElementById('featured-section').scrollIntoView();">Start Playing</button>
+            <button class="btn btn-secondary" onclick="document.getElementById('all-games-section').scrollIntoView();">Browse Games</button>
+        </div>
+    </section>
+
+    <section class="player-section" id="player-section">
+        <div class="player-header">
+            <h2 id="active-game-title">Select a Game</h2>
+            <div class="player-controls">
+                <button onclick="toggleFullscreen()">Fullscreen</button>
+                <button class="close-btn" onclick="closePlayer()">Close</button>
+            </div>
+        </div>
+        <div class="iframe-container" id="player-container">
+            </div>
+    </section>
+
+    <div class="container">
+        <div id="featured-section">
+            <h2 class="section-title">Featured Highlights</h2>
+            <div class="game-grid featured-grid" id="featured-grid">
+                </div>
+        </div>
+
+        <div id="all-games-section">
+            <h2 class="section-title">All Games</h2>
+            <div class="game-grid" id="all-games-grid">
+                </div>
+        </div>
     </div>
-</nav>
 
-<section class="hero">
-    <h2>Welcome 🚀</h2>
-    <p>Explore games and enjoy a clean, simple experience.</p>
-    <a href="games.html"><button>Go to Games</button></a>
-</section>
+    <footer class="sticky-footer">
+        TikTok: @forsakenbsalt Instagram: jahongir19371 
+    </footer>
 
-<p>⚠️<strong>WARNING:</strong> Website isn't fnished so expect some bugs or glitches. I do NOT own or claim to own these games, credits to the game develepors. I only made the website.⚠️</p>
-<br>
-<p>If you guys want me to embed more games, go to my tiktok, which is located at the footer, and comment which game.</p> 
-<footer class="fixedFooter">
-    <p>tt:@forsakenbsalt</p>
-</footer>
+    <script>
+        // 1. Data Structure: Exactly 25 Game Objects
+        const gamesData = [
+    {
+        id: 1,
+        title: "Basket Random",
+        thumbnail: "https://imgs.crazygames.com/basket-random_16x9/20240617090207/basket-random_16x9-cover?metadata=none&quality=100&width=1200&height=630&fit=crop",
+        embed: `<iframe src="https://www.twoplayergames.org/embed/basket-random" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 2,
+        title: "Drift Hunters Pro",
+        thumbnail: "https://cdn.jsdelivr.net/gh/mathlesson/mathlesson.github.io/img/Drift-Hunters-Pro.jpg",
+        embed: `<iframe src="https://www.onlinegames.io/games/2023/unity/drift-hunters-pro/index.html" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 3,
+        title: "BasketBall io",
+        thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyMZJ5tNvKtqUbO_02sjz0Xq_1bo5jE9gWog&s",
+        embed: `<iframe src="https://www.onlinegames.io/games/2022/unity3/basketball-io/index.html" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 4,
+        title: "House of Hazards",
+        thumbnail: "https://imgs.crazygames.com/house-of-hazards_16x9/20250108101728/house-of-hazards_16x9-cover?metadata=none&quality=100&width=1200&height=630&fit=crop",
+        embed: `<iframe src="https://www.twoplayergames.org/embed/house-of-hazards" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 5,
+        title: "Getaway Shootout",
+        thumbnail: "https://i.ytimg.com/vi/8qSqekAJEXY/maxresdefault.jpg",
+        embed: `<iframe src="https://www.twoplayergames.org/embed/getaway-shootout" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 6,
+        title: "Rooftop Snipers",
+        thumbnail: "https://imgs.crazygames.com/rooftop-snipers_16x9/20250108040440/rooftop-snipers_16x9-cover?metadata=none&quality=100&width=1200&height=630&fit=crop",
+        embed: `<iframe src="https://www.twoplayergames.org/embed/rooftop-snipers" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 7,
+        title: "Cat Simulator",
+        thumbnail: "https://tr.rbxcdn.com/180DAY-fab221e8540cc12056bdeb44d0808448/768/432/Image/Webp/noFilter",
+        embed: `<iframe src="https://www.onlinegames.io/games/2022/unity4/cat-simulator/index.html" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 8,
+        title: "G-Switch 3",
+        thumbnail: "https://img.itch.zone/aW1nLzE5NzAxNTY4LnBuZw==/original/EnyP71.png",
+        embed: `<iframe src="https://www.twoplayergames.org/embed/g-switch-3" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 9,
+        title: "Basketball Stars 2026",
+        thumbnail: "https://imgs.crazygames.com/games/basketball-stars-2019/cover-1583231506155.png?metadata=none&quality=60&height=5752",
+        embed: `<iframe src="https://www.twoplayergames.org/embed/basketball-stars-2026" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 10,
+        title: "Fire Boy & Water Girl",
+        thumbnail: "https://imgs.crazygames.com/games/fireboy-and-watergirl-the-forest-temple/cover-1586285142530.jpg?format=auto&quality=100&metadata=none&width=1200",
+        embed: `<iframe src="https://www.twoplayergames.org/embed/fire-and-water" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 11,
+        title: "MX-Offroad Master",
+        thumbnail: "https://i.ytimg.com/vi/7ugI5JahXco/maxresdefault.jpg",
+        embed: `<iframe src="https://www.twoplayergames.org/embed/mx-offroad-master" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 12,
+        title: "Dark Ninja Hanjo",
+        thumbnail: "https://www.onlinegames.io/media/posts/451/Dark-Ninja-Hanjo.jpg",
+        embed: `<iframe src="https://www.onlinegames.io/games/2023/unity/dark-ninja-hanjo/index.html" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 13,
+        title: "Funny Shooter Bro",
+        thumbnail: "https://w8.snokido.com/img/large/funny-shooter.jpg",
+        embed: `<iframe src="https://www.onlinegames.io/games/2024/unity/funny-shooter-bro/index.html" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 14,
+        title: "Geometry Vibes",
+        thumbnail: "https://i.ytimg.com/vi/oOtopH3eEt0/maxresdefault.jpg",
+        embed: `<iframe src="https://www.twoplayergames.org/embed/geometry-vibes" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 15,
+        title: "Geometry Dash",
+        thumbnail: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/322170/capsule_616x353.jpg?t=1703006148",
+        embed: `<iframe src="https://geometrylitepc.io/geo-dash-lite-pc.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 16,
+        title: "Five Nights at Epstein's",
+        thumbnail: "https://ozgames.io/cache/data/image/game/Five-Nights-at-Epsteins-m240x144.jpg",
+        embed: `<iframe src="https://ozgames.io/five-nights-at-epsteins.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 17,
+        title: "Veck io",
+        thumbnail: "https://ozgames.io/cache/data/image/game/Veck-IO-m240x144.JPG",
+        embed: `<iframe src="https://ozgames.io/veck-io.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 18,
+        title: "Wheelie Bike 2P",
+        thumbnail: "https://tcf.admeen.org/game/17500/17226/400x246/wheelie-bike-2.jpg",
+        embed: `<iframe src="https://www.twoplayergames.org/embed/wheelie-bike-2p" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 19,
+        title: "Slope",
+        thumbnail: "https://ozgames.io/cache/data/image/game/slopethumb-m240x144.JPG",
+        embed: `<iframe src="https://ozgames.io/slope.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 20,
+        title: "Subway Surfers",
+        thumbnail: "https://ozgames.io/cache/data/image/game/SubwaySurfersthumb-m240x144.JPG",
+        embed: `<iframe src="https://ozgames.io/subway-surfers.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 21,
+        title: "Monkey Mart",
+        thumbnail: "https://ozgames.io/cache/data/image/game/monkey-mart-m240x144.png",
+        embed: `<iframe src="https://ozgames.io/monkey-mart.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 22,
+        title: "Moto X3M",
+        thumbnail: "https://ozgames.io/cache/data/image/game/Moto-X3M-m240x144.JPG",
+        embed: `<iframe src="https://ozgames.io/moto-x3m.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 23,
+        title: "Drive Mad",
+        thumbnail: "https://ozgames.io/cache/data/image/game/drive-mad-1-m240x144.JPG",
+        embed: `<iframe src="https://ozgames.io/drive-mad.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 24,
+        title: "Happy Wheels",
+        thumbnail: "https://ozgames.io/cache/data/image/game/happy-wheels-1-m240x144.JPG",
+        embed: `<iframe src="https://ozgames.io/happy-wheels.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 25,
+        title: "Blumgi Slime",
+        thumbnail: "https://ozgames.io/cache/data/image/game/Blumgi-Slime-m240x144.JPG",
+        embed: `<iframe src="https://ozgames.io/blumgi-slime.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+        {
+        id: 26,
+        title: "Cluster Rush",
+        thumbnail: "https://ozgames.io/cache/data/image/game/Cluster-Rush-m240x144.JPG",
+        embed: `<iframe src="https://ozgames.io/cluster-rush.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+        {
+        id: 27,
+        title: "Dreadhead Parkour",
+        thumbnail: "https://ozgames.io/cache/data/image/game/Dreadhead-Parkour-m240x144.JPG",
+        embed: `<iframe src="https://ozgames.io/dreadhead-parkour.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+        {
+        id: 28,
+        title: "Drive Mad 2",
+        thumbnail: "https://ozgames.io/cache/data/image/game/Drive-Mad-2-m240x144.JPG",
+        embed: `<iframe src="https://ozgames.io/drive-mad-2.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+        {
+        id: 29,
+        title: "Doodle Jump",
+        thumbnail: "https://ozgames.io/cache/data/image/game/Doodle-Jump-m240x144.JPG",
+        embed: `<iframe src="https://ozgames.io/doodle-jump.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+        {
+        id: 30,
+        title: "Wacky Steps",
+        thumbnail: "https://ozgames.io/cache/data/image/game/Wacky-Steps-m240x144.JPG",
+        embed: `<iframe src="https://ozgames.io/wacky-steps.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+        {
+        id: 31,
+        title: "Temple Run",
+        thumbnail: "https://ozgames.io/cache/data/image/game/temple-run-m240x144.JPG",
+        embed: `<iframe src="https://ozgames.io/temple-run.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+        {
+        id: 32,
+        title: "Gun Spin",
+        thumbnail: "https://ozgames.io/cache/data/image/game/gunspin-cover-m240x144.png",
+        embed: `<iframe src="https://ozgames.io/gunspin.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+        {
+        id: 33,
+        title: "Epstein Clicker",
+        thumbnail: "https://ozgames.io/cache/data/image/game/Epstein-Clicker-1-m240x144.JPG",
+        embed: `<iframe src="https://ozgames.io/epstein-clicker.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+        {
+        id: 34,
+        title: "That's Not My Neighbor",
+        thumbnail: "https://ozgames.io/cache/data/image/game/Thats-Not-My-Neighbor-m240x144.JPG",
+        embed: `<iframe src="https://ozgames.io/thats-not-my-neighbor.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+        {
+        id: 35,
+        title: "Tomb of The Mask",
+        thumbnail: "https://ozgames.io/cache/data/image/game/Tomb-of-the-Mask-m240x144.JPG",
+        embed: `<iframe src="https://ozgames.io/tomb-of-the-mask.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 36,
+        title: "Crossy Road",
+        thumbnail: "https://ozgames.io/cache/data/image/game/Crossy-Road-m240x144.JPG",
+        embed: `<iframe src="https://ozgames.io/crossy-road.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+        {
+        id: 37,
+        title: "EaglerCraft",
+        thumbnail: "https://ozgames.io/cache/data/image/game/eaglercraft-m240x144.JPG",
+        embed: `<iframe src="https://ozgames.io/eaglercraft.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+    {
+        id: 38,
+        title: "Slope Rider",
+        thumbnail: "https://ozgames.io/cache/data/image/game/slope-rider-m160x96.JPG",
+        embed: `<iframe src="https://ozgames.io/slope-rider.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+        {
+        id: 39,
+        title: "Crazy Cattle 3D",
+        thumbnail: "https://ozgames.io/cache/data/image/game/crazy-cattle-3d-cover-m240x144.png",
+        embed: `<iframe src="https://ozgames.io/crazy-cattle-3d.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
+        {
+        id: 40,
+        title: "Sparta Hoppers",
+        thumbnail: "https://www.onlinegames.io/media/posts/949/responsive/sparta-hoppers-game-lg.jpg",
+        embed: `<iframe src="https://cloud.onlinegames.io/games/2025/construct/227/spartahoppers/index-og.html" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`
+    },
 
+    
+    
+];
+
+        // 2. DOM Elements
+        const featuredGrid = document.getElementById('featured-grid');
+        const allGamesGrid = document.getElementById('all-games-grid');
+        const playerSection = document.getElementById('player-section');
+        const activeGameTitle = document.getElementById('active-game-title');
+        const playerContainer = document.getElementById('player-container');
+
+        // 3. Render Engine
+function createGameCard(game) {
+    const card = document.createElement('div');
+    card.className = 'game-card';
+    
+    // 1. Fix the path: If there's a space, encode it so the browser can read it
+    const fixedPath = game.thumbnail.replace(/ /g, '%20');
+
+    // 2. Logic: If thumbnail exists, show the image. If not, show the GX placeholder.
+    const thumbContent = game.thumbnail 
+        ? `<img src="${fixedPath}" alt="${game.title}" style="width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0;">`
+        : `<div class="thumbnail-placeholder">GX-${game.id}</div>`;
+
+    card.innerHTML = `
+        <div class="thumbnail-container">
+            ${thumbContent}
+        </div>
+        <div class="game-info">
+            <div class="game-title">${game.title}</div>
+            <button class="play-btn-small">Play</button>
+        </div>
+    `;
+
+    // Bind click event to open the player section
+    card.addEventListener('click', () => loadGame(game));
+
+    return card;
+}
+
+        function renderGrids() {
+            // First 6 go to Featured section
+            const featuredGames = gamesData.slice(0, 6);
+            featuredGames.forEach(game => {
+                featuredGrid.appendChild(createGameCard(game));
+            });
+
+            // All 25 go to the main grid
+            gamesData.forEach(game => {
+                allGamesGrid.appendChild(createGameCard(game));
+            });
+        }
+
+        // 4. Interaction Logic
+        function loadGame(game) {
+            // Update Title and Embed Content
+            activeGameTitle.textContent = game.title;
+            playerContainer.innerHTML = game.embed; 
+            
+            // Show Player Section
+            playerSection.classList.add('active');
+            
+            // Smooth scroll to player
+            setTimeout(() => {
+                playerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 50); // slight delay ensures layout computes
+        }
+
+        function closePlayer() {
+            playerSection.classList.remove('active');
+            
+            // Stop game execution / audio by clearing the iframe container
+            setTimeout(() => {
+                playerContainer.innerHTML = '';
+            }, 400); // wait for CSS transition to finish hiding it
+        }
+
+        function toggleFullscreen() {
+            const elem = document.getElementById('player-container');
+            
+            if (!document.fullscreenElement) {
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen();
+                } else if (elem.webkitRequestFullscreen) { /* Safari */
+                    elem.webkitRequestFullscreen();
+                } else if (elem.msRequestFullscreen) { /* IE11 */
+                    elem.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) { /* Safari */
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) { /* IE11 */
+                    document.msExitFullscreen();
+                }
+            }
+        }
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', renderGrids);
+    </script>
 </body>
 </html>
