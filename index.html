@@ -7,18 +7,21 @@
     <link rel="icon" type="png" href="zephynlogo.png">
     <style>
         /* --- DESIGN SYSTEM & VARIABLES --- */
-        :root {
-            --bg-color: #05050A; /* Near black */
-            --surface-color: #12131C; /* Dark navy */
-            --surface-hover: #1A1C29;
-            --primary-color: #0B5FFF; /* Deep blue */
-            --accent-color: #00E5FF; /* Bright blue */
-            --text-main: #FFFFFF;
-            --text-secondary: #9BA1B0;
-            --border-radius: 12px;
-            --transition-speed: 0.3s;
-            --header-height: 70px;
-        }
+    :root {
+        --bg-color: #000;
+        --surface-color: #111;
+        --surface-hover: #1a1a1a;
+
+        --primary-color: #fff;
+        --accent-color: #ccc;
+
+        --text-main: #ffffff;
+        --text-secondary: #aaaaaa;
+
+        --border-radius: 12px;
+        --transition-speed: 0.3s;
+        --header-height: 70px;
+    }
 
         /* --- RESET & TYPOGRAPHY --- */
         * {
@@ -31,13 +34,12 @@
         html {
             scroll-behavior: smooth;
         }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+    body {
+        background: linear-gradient(135deg, #000, #111, #222);
+        color: var(--text-main);
+        line-height: 1.6;
+        overflow-x: hidden;
+    }
 
         /* --- LAYOUT STRUCTURE --- */
 
@@ -90,7 +92,7 @@
             align-items: center;
             text-align: center;
             padding: 40px 20px;
-            background: radial-gradient(circle at center, rgba(11, 95, 255, 0.15) 0%, rgba(5, 5, 10, 1) 70%);
+            background: radial-gradient(circle at center, #222 0%, #000 70%);
             position: relative;
         }
 
@@ -98,7 +100,7 @@
             font-size: 3.5rem;
             font-weight: 800;
             margin-bottom: 15px;
-            background: linear-gradient(90deg, #FFFFFF, var(--accent-color));
+            background: linear-gradient(90deg, #fff, #888);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -122,16 +124,16 @@
         }
 
         .btn-primary {
-            background-color: var(--primary-color);
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(11, 95, 255, 0.4);
+            background: linear-gradient(135deg, #fff, #ccc);
+            color: black;
+            box-shadow: 0 4px 15px rgba(255,255,255,0.2);
             animation: pulse 2s infinite;
         }
 
         .btn-primary:hover {
-            background-color: var(--accent-color);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 229, 255, 0.6);
+        background: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255,255,255,0.4);
         }
 
         .btn-secondary {
@@ -147,7 +149,7 @@
         }
 
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(11, 95, 255, 0.7); }
+            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
             70% { box-shadow: 0 0 0 12px rgba(11, 95, 255, 0); }
             100% { box-shadow: 0 0 0 0 rgba(11, 95, 255, 0); }
         }
@@ -171,10 +173,10 @@
             display: inline-block;
             width: 6px;
             height: 28px;
-            background-color: var(--accent-color);
+            background: linear-gradient(#fff, #888);
             margin-right: 15px;
             border-radius: 4px;
-            box-shadow: 0 0 8px var(--accent-color);
+            box-shadow: 0 0 6px rgba(255,255,255,0.3);
         }
 
         /* Game Grid & Cards */
@@ -203,8 +205,8 @@
 
         .game-card:hover {
             transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(11, 95, 255, 0.3);
-            border-color: rgba(11, 95, 255, 0.3);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8), 0 0 10px rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.15);
             z-index: 2;
         }
 
@@ -249,8 +251,8 @@
         }
 
         .play-btn-small {
-            background-color: rgba(11, 95, 255, 0.2);
-            color: var(--accent-color);
+            background-color: rgba(255,255,255,0.1);
+            color: #fff;
             border: none;
             padding: 6px 12px;
             border-radius: 6px;
