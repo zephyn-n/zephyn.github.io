@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ForsakenUnblocked — Play</title>
+    <link rel="icon" type="svg" href="forsakenunblockedicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0d0d14;
+            --surface: #13131f;
+            --surface2: #1a1a2e;
+            --accent1: #ff4d6d;
+            --accent2: #00c9ff;
+            --accent3: #f5a623;
+            --accent4: #7b2fff;
+            --text: #f0f0ff;
+            --text-dim: #8888aa;
+            --radius: 14px;
+            --speed: 0.28s;
+            --header-h: 68px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image:
+                radial-gradient(ellipse 80% 50% at 20% -10%, rgba(123,47,255,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 80% 110%, rgba(0,201,255,0.10) 0%, transparent 55%);
+        }
+
+        /* ── HEADER ── */
+        header {
+            position: fixed;
+            top: 0; width: 100%;
+            height: var(--header-h);
+            background: rgba(13,13,20,0.92);
+            backdrop-filter: blur(16px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 36px;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.9rem;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, var(--accent1), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .logo span { -webkit-text-fill-color: var(--accent3); }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.07);
+            border: 1.5px solid rgba(255,255,255,0.1);
+            color: var(--text);
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 800;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all var(--speed);
+        }
+        .back-btn:hover {
+            border-color: var(--accent2);
+            color: var(--accent2);
+            background: rgba(0,201,255,0.08);
+        }
+
+        /* ── MAIN ── */
+        main {
+            flex: 1;
+            margin-top: var(--header-h);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Game meta bar */
+        .game-meta-bar {
+            background: var(--surface);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 16px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .game-meta-bar h1 {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, var(--text), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .game-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .ctrl-btn {
+            background: rgba(255,255,255,0.07);
+            border: 1.5px solid rgba(255,255,255,0.1);
+            color: var(--text);
+            padding: 9px 20px;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all var(--speed);
+        }
+        .ctrl-btn:hover {
+            background: rgba(255,255,255,0.13);
+            border-color: var(--accent2);
+            color: var(--accent2);
+        }
+
+        .ctrl-btn.fullscreen-btn:hover {
+            border-color: var(--accent3);
+            color: var(--accent3);
+        }
+
+        /* ── IFRAME AREA ── */
+        .game-frame-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 24px 36px 36px;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .iframe-box {
+            width: 100%;
+            flex: 1;
+            min-height: 580px;
+            background: #000;
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1.5px solid rgba(255,255,255,0.07);
+            box-shadow: 0 0 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(0,201,255,0.08);
+            position: relative;
+        }
+
+        .iframe-box iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+            min-height: 580px;
+        }
+
+        /* Loading overlay */
+        .loading-overlay {
+            position: absolute;
+            inset: 0;
+            background: var(--surface2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            border-radius: var(--radius);
+            transition: opacity 0.4s ease;
+        }
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .spinner {
+            width: 48px; height: 48px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top-color: var(--accent1);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-text {
+            font-family: 'Bebas Neue', cursive;
+            letter-spacing: 2px;
+            font-size: 1.2rem;
+            color: var(--text-dim);
+        }
+
+        /* ── MORE GAMES STRIP ── */
+        .more-games-section {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 36px 50px;
+        }
+
+        .more-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.6rem;
+            letter-spacing: 2px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-dim);
+        }
+        .more-title .bar {
+            width: 5px; height: 24px;
+            background: linear-gradient(180deg, var(--accent3), var(--accent1));
+            border-radius: 4px;
+        }
+
+        .more-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 14px;
+        }
+
+        .mini-card {
+            background: var(--surface);
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.04);
+            text-decoration: none;
+            color: inherit;
+            transition: transform var(--speed), box-shadow var(--speed), border-color var(--speed);
+            display: block;
+        }
+        .mini-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.6);
+            border-color: rgba(255,77,109,0.25);
+        }
+        .mini-thumb {
+            width: 100%;
+            padding-top: 60%;
+            position: relative;
+            background: var(--surface2);
+            overflow: hidden;
+        }
+        .mini-thumb img {
+            position: absolute;
+            inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.35s ease;
+        }
+        .mini-card:hover .mini-thumb img { transform: scale(1.08); }
+        .mini-info {
+            padding: 8px 10px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--text-dim);
+        }
+        .mini-card:hover .mini-info { color: var(--text); }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--surface);
+            text-align: center;
+            padding: 16px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            font-weight: 600;
+        }
+        footer span { color: var(--accent1); }
+
+        /* ── NOT FOUND ── */
+        .not-found {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 16px;
+            padding: 40px;
+        }
+        .not-found h2 {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 3rem;
+            letter-spacing: 3px;
+            color: var(--accent1);
+        }
+        .not-found p { color: var(--text-dim); font-size: 1.1rem; }
+        .not-found a {
+            margin-top: 8px;
+            padding: 12px 28px;
+            border-radius: 50px;
+            background: linear-gradient(135deg, var(--accent1), var(--accent4));
+            color: #fff;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1rem;
+            transition: opacity 0.2s;
+        }
+        .not-found a:hover { opacity: 0.85; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1100px) { .more-grid { grid-template-columns: repeat(4, 1fr); } }
+        @media (max-width: 768px)  {
+            .more-grid { grid-template-columns: repeat(3, 1fr); }
+            header { padding: 0 20px; }
+            .game-meta-bar, .game-frame-wrapper, .more-games-section { padding-left: 20px; padding-right: 20px; }
+            .iframe-box, .iframe-box iframe { min-height: 420px; }
+        }
+        @media (max-width: 480px)  {
+            .more-grid { grid-template-columns: repeat(2, 1fr); }
+            .iframe-box, .iframe-box iframe { min-height: 320px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a class="logo" href="index.html">Forsaken<span>Unblocked</span></a>
+        <a class="back-btn" href="index.html">← Back to Games</a>
+    </header>
+
+    <main id="main-content">
+        <!-- Populated by JS -->
+    </main>
+
+    <footer>
+        <span>ForsakenUnblocked</span> &nbsp;|&nbsp; TikTok: @zephyn.n &nbsp;|&nbsp; Instagram: jahongir.jahongir.jahongir
+    </footer>
+
+    <script>
+        const gamesData = [
+    { id: 1,  title: "Basket Random",         thumbnail: "https://imgs.crazygames.com/basket-random_16x9/20240617090207/basket-random_16x9-cover?metadata=none&quality=100&width=1200&height=630&fit=crop", embed: `<iframe src="https://www.twoplayergames.org/embed/basket-random" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 2,  title: "Drift Hunters Pro",      thumbnail: "https://cdn.jsdelivr.net/gh/mathlesson/mathlesson.github.io/img/Drift-Hunters-Pro.jpg", embed: `<iframe src="https://www.onlinegames.io/games/2023/unity/drift-hunters-pro/index.html" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 3,  title: "BasketBall io",          thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyMZJ5tNvKtqUbO_02sjz0Xq_1bo5jE9gWog&s", embed: `<iframe src="https://www.onlinegames.io/games/2022/unity3/basketball-io/index.html" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 4,  title: "House of Hazards",       thumbnail: "https://imgs.crazygames.com/house-of-hazards_16x9/20250108101728/house-of-hazards_16x9-cover?metadata=none&quality=100&width=1200&height=630&fit=crop", embed: `<iframe src="https://www.twoplayergames.org/embed/house-of-hazards" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 5,  title: "Getaway Shootout",       thumbnail: "https://i.ytimg.com/vi/8qSqekAJEXY/maxresdefault.jpg", embed: `<iframe src="https://www.twoplayergames.org/embed/getaway-shootout" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 6,  title: "Rooftop Snipers",        thumbnail: "https://imgs.crazygames.com/rooftop-snipers_16x9/20250108040440/rooftop-snipers_16x9-cover?metadata=none&quality=100&width=1200&height=630&fit=crop", embed: `<iframe src="https://www.twoplayergames.org/embed/rooftop-snipers" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 7,  title: "Cat Simulator",          thumbnail: "https://tr.rbxcdn.com/180DAY-fab221e8540cc12056bdeb44d0808448/768/432/Image/Webp/noFilter", embed: `<iframe src="https://www.onlinegames.io/games/2022/unity4/cat-simulator/index.html" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 8,  title: "G-Switch 3",             thumbnail: "https://img.itch.zone/aW1nLzE5NzAxNTY4LnBuZw==/original/EnyP71.png", embed: `<iframe src="https://www.twoplayergames.org/embed/g-switch-3" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 9,  title: "Basketball Stars 2026",  thumbnail: "https://imgs.crazygames.com/games/basketball-stars-2019/cover-1583231506155.png?metadata=none&quality=60&height=5752", embed: `<iframe src="https://www.twoplayergames.org/embed/basketball-stars-2026" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 10, title: "Fire Boy & Water Girl",  thumbnail: "https://imgs.crazygames.com/games/fireboy-and-watergirl-the-forest-temple/cover-1586285142530.jpg?format=auto&quality=100&metadata=none&width=1200", embed: `<iframe src="https://www.twoplayergames.org/embed/fire-and-water" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 11, title: "MX-Offroad Master",      thumbnail: "https://i.ytimg.com/vi/7ugI5JahXco/maxresdefault.jpg", embed: `<iframe src="https://www.twoplayergames.org/embed/mx-offroad-master" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 12, title: "Dark Ninja Hanjo",       thumbnail: "https://www.onlinegames.io/media/posts/451/Dark-Ninja-Hanjo.jpg", embed: `<iframe src="https://www.onlinegames.io/games/2023/unity/dark-ninja-hanjo/index.html" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 13, title: "Funny Shooter Bro",      thumbnail: "https://w8.snokido.com/img/large/funny-shooter.jpg", embed: `<iframe src="https://www.onlinegames.io/games/2024/unity/funny-shooter-bro/index.html" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 14, title: "Geometry Vibes",         thumbnail: "https://i.ytimg.com/vi/oOtopH3eEt0/maxresdefault.jpg", embed: `<iframe src="https://www.twoplayergames.org/embed/geometry-vibes" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 15, title: "Geometry Dash",          thumbnail: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/322170/capsule_616x353.jpg?t=1703006148", embed: `<iframe src="https://geometrylitepc.io/geo-dash-lite-pc.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 16, title: "Five Nights at Epstein's", thumbnail: "https://ozgames.io/cache/data/image/game/Five-Nights-at-Epsteins-m240x144.jpg", embed: `<iframe src="https://ozgames.io/five-nights-at-epsteins.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 17, title: "Veck io",                thumbnail: "https://ozgames.io/cache/data/image/game/Veck-IO-m240x144.JPG", embed: `<iframe src="https://ozgames.io/veck-io.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 18, title: "Wheelie Bike 2P",        thumbnail: "https://tcf.admeen.org/game/17500/17226/400x246/wheelie-bike-2.jpg", embed: `<iframe src="https://www.twoplayergames.org/embed/wheelie-bike-2p" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 19, title: "Slope",                  thumbnail: "https://ozgames.io/cache/data/image/game/slopethumb-m240x144.JPG", embed: `<iframe src="https://ozgames.io/slope.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 20, title: "Subway Surfers",         thumbnail: "https://ozgames.io/cache/data/image/game/SubwaySurfersthumb-m240x144.JPG", embed: `<iframe src="https://ozgames.io/subway-surfers.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 21, title: "Monkey Mart",            thumbnail: "https://ozgames.io/cache/data/image/game/monkey-mart-m240x144.png", embed: `<iframe src="https://ozgames.io/monkey-mart.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 22, title: "Moto X3M",               thumbnail: "https://ozgames.io/cache/data/image/game/Moto-X3M-m240x144.JPG", embed: `<iframe src="https://ozgames.io/moto-x3m.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 23, title: "Drive Mad",              thumbnail: "https://ozgames.io/cache/data/image/game/drive-mad-1-m240x144.JPG", embed: `<iframe src="https://ozgames.io/drive-mad.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 24, title: "Happy Wheels",           thumbnail: "https://ozgames.io/cache/data/image/game/happy-wheels-1-m240x144.JPG", embed: `<iframe src="https://ozgames.io/happy-wheels.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 25, title: "Blumgi Slime",           thumbnail: "https://ozgames.io/cache/data/image/game/Blumgi-Slime-m240x144.JPG", embed: `<iframe src="https://ozgames.io/blumgi-slime.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 26, title: "Cluster Rush",           thumbnail: "https://ozgames.io/cache/data/image/game/Cluster-Rush-m240x144.JPG", embed: `<iframe src="https://ozgames.io/cluster-rush.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 27, title: "Dreadhead Parkour",      thumbnail: "https://ozgames.io/cache/data/image/game/Dreadhead-Parkour-m240x144.JPG", embed: `<iframe src="https://ozgames.io/dreadhead-parkour.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 28, title: "Drive Mad 2",            thumbnail: "https://ozgames.io/cache/data/image/game/Drive-Mad-2-m240x144.JPG", embed: `<iframe src="https://ozgames.io/drive-mad-2.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 29, title: "Doodle Jump",            thumbnail: "https://ozgames.io/cache/data/image/game/Doodle-Jump-m240x144.JPG", embed: `<iframe src="https://ozgames.io/doodle-jump.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 30, title: "Wacky Steps",            thumbnail: "https://ozgames.io/cache/data/image/game/Wacky-Steps-m240x144.JPG", embed: `<iframe src="https://ozgames.io/wacky-steps.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 31, title: "Temple Run",             thumbnail: "https://ozgames.io/cache/data/image/game/temple-run-m240x144.JPG", embed: `<iframe src="https://ozgames.io/temple-run.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 32, title: "Gun Spin",               thumbnail: "https://ozgames.io/cache/data/image/game/gunspin-cover-m240x144.png", embed: `<iframe src="https://ozgames.io/gunspin.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 33, title: "Epstein Clicker",        thumbnail: "https://ozgames.io/cache/data/image/game/Epstein-Clicker-1-m240x144.JPG", embed: `<iframe src="https://ozgames.io/epstein-clicker.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 34, title: "That's Not My Neighbor", thumbnail: "https://ozgames.io/cache/data/image/game/Thats-Not-My-Neighbor-m240x144.JPG", embed: `<iframe src="https://ozgames.io/thats-not-my-neighbor.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 35, title: "Tomb of The Mask",       thumbnail: "https://ozgames.io/cache/data/image/game/Tomb-of-the-Mask-m240x144.JPG", embed: `<iframe src="https://ozgames.io/tomb-of-the-mask.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 36, title: "Crossy Road",            thumbnail: "https://ozgames.io/cache/data/image/game/Crossy-Road-m240x144.JPG", embed: `<iframe src="https://ozgames.io/crossy-road.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 37, title: "EaglerCraft",            thumbnail: "https://ozgames.io/cache/data/image/game/eaglercraft-m240x144.JPG", embed: `<iframe src="https://ozgames.io/eaglercraft.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 38, title: "Slope Rider",            thumbnail: "https://ozgames.io/cache/data/image/game/slope-rider-m160x96.JPG", embed: `<iframe src="https://ozgames.io/slope-rider.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 39, title: "Crazy Cattle 3D",        thumbnail: "https://ozgames.io/cache/data/image/game/crazy-cattle-3d-cover-m240x144.png", embed: `<iframe src="https://ozgames.io/crazy-cattle-3d.embed" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 40, title: "Sparta Hoppers",         thumbnail: "https://www.onlinegames.io/media/posts/949/responsive/sparta-hoppers-game-lg.jpg", embed: `<iframe src="https://cloud.onlinegames.io/games/2025/construct/227/spartahoppers/index-og.html" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>` },
+    { id: 41, title: "Traffic Road",           thumbnail: "https://ozgames.io/cache/data/image/game/traffic-road-cover-m240x144.png", embed: `<iframe src="https://ozgames.io/traffic-road.embed" width="1280" height="720" frameborder="0" border="0" scrolling="none"></iframe>`},
+    { id: 42, title: "Speed Stars",            thumbnail: "https://ozgames.io/cache/data/image/game/speed-stars-cover-m240x144.png", embwed: `<iframe src="https://ozgames.io/speed-stars.embed" width="1280" height="720" frameborder="0" border="0" scrolling="none"></iframe>`},
+    { id: 43, title: "Cookie Clicker",         thumbnail: "https://yoplay.io/cache/data/image/game/cookie-clicker1-m160x96.jpg", embed: `<iframe src="https://ozgames.io/cookie-clicker.embed" width="1280" height="720" frameborder="0" border="0" scrolling="none"></iframe>`},
+    { id: 44, title: "Dude Theft Auto",        thumbnail: "https://ozgames.io/cache/data/image/game/Dude-Theft-Auto-1-m240x144.JPG", embed: `<iframe src="https://ozgames.io/dude-theft-auto.embed" width="1280" height="720" frameborder="0" border="0" scrolling="none"></iframe>`},
+    { id: 45, title: "Five Nights At Freddy's(FNAF)", thumbnail: "https://ozgames.io/cache/data/image/game/Five-Nights-at-Freddy---s-m240x144.jpg", embed: `<iframe src="https://ozgames.io/five-nights-at-freddys.embed" width="1280" height="720" frameborder="0" border="0" scrolling="none"></iframe>`},
+    { id: 46, title: "Ragdoll Hit Stickman",   thumbnail: "https://ozgames.io/cache/data/image/game/ragdoll-hit-stickman-cover-m240x144.png", embed: `<iframe src="https://ozgames.io/ragdoll-hit-stickman.embed" width="1280" height="720" frameborder="0" border="0" scrolling="none"></iframe>`},
+    { id: 47, title: "Murder",                 thumbnail: "https://ozgames.io/cache/data/image/game/murder-m240x144.JPG", embed: `<iframe src="https://ozgames.io/murder.embed" width="1280" height="720" frameborder="0" border="0" scrolling="none"></iframe>`},
+    { id: 48, title: "Time Shooter",           thumbnail: "https://imgs.crazygames.com/time-shooter-2_16x9/20241113040556/time-shooter-2_16x9-cover?metadata=none&quality=100&width=1200&height=630&fit=crop", embed: `<iframe src="https://ozgames.io/time-shooter.embed" width="1280" height="720" frameborder="0" border="0" scrolling="none"></iframe>`},
+    { id: 49, title: "Lab Havoc",              thumbnail: "https://ozgames.io/cache/data/image/game/lab-havoc-m240x144.jpg", embed: `<iframe src="https://ozgames.io/lab-havoc.embed" width="1280" height="720" frameborder="0" border="0" scrolling="none"></iframe>`},
+    { id: 50, title: "Cuphead",                thumbnail: "https://ozgames.io/cache/data/image/game/Cuphead-m240x144.JPG", embed: `<iframe src="https://ozgames.io/cuphead.embed" width="1280" height="720" frameborder="0" border="0" scrolling="none"></iframe>`},
+    { id: 51, title: "Snowball.io",            thumbnail: "https://play-lh.googleusercontent.com/bVYC5zsBjJf-ztbarWeOp4-qTlL4h0I3ajJoCYq8xXcG1ovafqZ2steRipRK45dJTA=w526-h296-rw", embed: `<iframe src="https://ozgames.io/snowballio.embed" width="1280" height="720" frameborder="0" border="0" scrolling="none"></iframe>`},
+    { id: 52, title: "Clicker Heroes",         thumbnail: "https://cdn.playsaurus.com/build/assets/clicker-heroes-screenshot-KGuEurrO.png", embed: `<iframe style="width:100%; height:100%; border: 0;" scrolling="no" allow="autoplay *; payment *; fullscreen *; microphone *; focus-without-user-activation *; screen-wake-lock *; gamepad *; clipboard-read *; clipboard-write *;" src="https://cdn.clickerheroes.com/gamebuild/index.php"></iframe>`},
+    { id: 53, title: "Mr.Mine",                thumbnail: "https://cdn.playsaurus.com/build/assets/mr-mine-screenshot-C7428jSK.png", embed: `<iframe src="https://mrmine.com/game/" title="Mr.Mine" scrolling="no" allow="autoplay; payment; fullscreen; microphone; clipboard-read; focus-without-user-activation *; screen-wake-lock; gamepad; clipboard-write 'self' https://mrmine.com" webkitallowfullscreen="true" mozallowfullscreen="true" msallowfullscreen="true" allowfullscreen="true" allowfullscreen loading="eager" style="border: 0px; background-color: rgb(255, 255, 255); width: 10px; height: 10px; min-width: 100%; min-height: 100%;"></iframe>`},
+    { id: 54, title: "Poker Quest",            thumbnail: "https://cdn.playsaurus.com/build/assets/poker-quest-screenshot-BDFoidpq.png", embed: `<iframe src="https://playsaurus.com/kongPokerQuest63/" title="Poker Quest" scrolling="no" allow="autoplay; payment; fullscreen; microphone; clipboard-read; focus-without-user-activation *; screen-wake-lock; gamepad; clipboard-write 'self' https://playsaurus.com/kongPokerQuest56/" webkitallowfullscreen="true" mozallowfullscreen="true" msallowfullscreen="true" allowfullscreen="true" allowfullscreen loading="eager" style="border: 0px; background-color: rgb(255, 255, 255); width: 10px; height: 10px; min-width: 100%; min-height: 100%;"></iframe>`},
+    { id: 55, title: "Grindcraft",             thumbnail: "https://cdn.playsaurus.com/build/assets/grindcraft-screenshot-DoZLcEWg.png", embed: `<iframe src="https://grindcraft.com/game.php" title="Grindcraft" scrolling="no" allow="autoplay; payment; fullscreen; microphone; clipboard-read; focus-without-user-activation *; screen-wake-lock; gamepad; clipboard-write 'self' https://grindcraft.com" webkitallowfullscreen="true" mozallowfullscreen="true" msallowfullscreen="true" allowfullscreen="true" allowfullscreen loading="eager" style="border: 0px; background-color: rgb(255, 255, 255); width: 10px; height: 10px; min-width: 100%; min-height: 100%;"></iframe>`},
+    { id: 56, title: "Fray Fight",             thumbnail: "https://cdn.playsaurus.com/build/assets/fray-fight-screenshot-Bn13KvoA.png", embed: `<iframe src="https://frayfight.com/game/" title="Fray Fight" scrolling="no" allow="autoplay; payment; fullscreen; microphone; clipboard-read; focus-without-user-activation *; screen-wake-lock; gamepad; clipboard-write 'self' https://frayfight.com" webkitallowfullscreen="true" mozallowfullscreen="true" msallowfullscreen="true" allowfullscreen="true" allowfullscreen loading="eager" style="border: 0px; background-color: rgb(255, 255, 255); width: 10px; height: 10px; min-width: 100%; min-height: 100%;"></iframe>`}
+];
+
+        const params = new URLSearchParams(window.location.search);
+        const gameId = parseInt(params.get('id'));
+        const game = gamesData.find(g => g.id === gameId);
+        const main = document.getElementById('main-content');
+
+        if (!game) {
+            main.innerHTML = `
+                <div class="not-found">
+                    <h2>Game Not Found</h2>
+                    <p>Hmm, we couldn't find that game. It may have been removed.</p>
+                    <a href="index.html">← Back to All Games</a>
+                </div>
+            `;
+        } else {
+            document.title = `${game.title} — ForsakenUnblocked`;
+
+            // Shuffle a list of "more games" (exclude current)
+            const others = gamesData.filter(g => g.id !== game.id).sort(() => Math.random() - 0.5).slice(0, 12);
+
+            const moreCards = others.map(g => `
+                <a class="mini-card" href="game.html?id=${g.id}">
+                    <div class="mini-thumb">
+                        ${g.thumbnail ? `<img src="${g.thumbnail.replace(/ /g,'%20')}" alt="${g.title}" loading="lazy">` : ''}
+                    </div>
+                    <div class="mini-info">${g.title}</div>
+                </a>
+            `).join('');
+
+            main.innerHTML = `
+                <div class="game-meta-bar">
+                    <h1>${game.title}</h1>
+                    <div class="game-controls">
+                        <button class="ctrl-btn fullscreen-btn" onclick="goFullscreen()">⛶ Fullscreen</button>
+                    </div>
+                </div>
+
+                <div class="game-frame-wrapper">
+                    <div class="iframe-box" id="iframe-box">
+                        <div class="loading-overlay" id="loading-overlay">
+                            <div class="spinner"></div>
+                            <div class="loading-text">Loading ${game.title}...</div>
+                        </div>
+                        ${game.embed}
+                    </div>
+                </div>
+
+                <div class="more-games-section">
+                    <h2 class="more-title"><span class="bar"></span>More Games</h2>
+                    <div class="more-grid">${moreCards}</div>
+                </div>
+            `;
+
+            // Hide loading overlay once iframe loads
+            const iframe = document.querySelector('#iframe-box iframe');
+            if (iframe) {
+                iframe.addEventListener('load', () => {
+                    document.getElementById('loading-overlay').classList.add('hidden');
+                });
+                // Fallback: hide after 4s
+                setTimeout(() => {
+                    const ol = document.getElementById('loading-overlay');
+                    if (ol) ol.classList.add('hidden');
+                }, 4000);
+            }
+        }
+
+        function goFullscreen() {
+            const box = document.getElementById('iframe-box');
+            if (!box) return;
+            if (box.requestFullscreen) box.requestFullscreen();
+            else if (box.webkitRequestFullscreen) box.webkitRequestFullscreen();
+        }
+    </script>
+</body>
+</html>
